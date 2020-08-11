@@ -20,13 +20,17 @@ module OmniAuth
 
       info do
         {
-          name: raw_info["name"]
+          name: raw_info["name"],
+          email: request.params["contact_email"],
+          urls: {
+            account: raw_info["url"]
+          }
         }
       end
 
       extra do
         {
-          "raw_info" => raw_info
+          "raw_info" => raw_info.merge(request.params.slice("contact_id", "contact_email"))
         }
       end
 
