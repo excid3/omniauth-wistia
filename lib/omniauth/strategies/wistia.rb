@@ -26,10 +26,9 @@ module OmniAuth
 
       protected
 
-      def build_access_token
-        verifier = request.params["code"]
-        params = {:redirect_uri => callback_url, :state => request.params["state"], :client_id => client.id, :client_secret => client.secret}
-        client.auth_code.get_token(verifier, params.merge(token_params.to_hash(:symbolize_keys => true)), deep_symbolize(options.auth_token_params))
+      # Override callback URL to strip query params, Wistia is strict about this (as per oauth2 spec).
+      def callback_url
+        full_host + script_name + callback_path
       end
 
     end
